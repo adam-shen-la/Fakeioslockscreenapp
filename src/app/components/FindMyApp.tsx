@@ -424,27 +424,8 @@ export function FindMyApp({ onBack }: FindMyAppProps) {
         <VirginiaMap />
       </div>
 
-      {/* ── Status bar overlay ── */}
-      <div style={{
-        position: 'relative', zIndex: 20,
-        paddingTop: 'max(14px, env(safe-area-inset-top, 14px))',
-        paddingLeft: 16, paddingRight: 16,
-        display: 'flex', alignItems: 'center', justifyContent: 'space-between',
-        height: 56,
-      }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: 5 }}>
-          <SignalBars />
-          <span style={{ color: 'white', fontSize: 14, fontWeight: 600, fontFamily: '-apple-system,sans-serif' }}>T-Mobile</span>
-        </div>
-        <span style={{ color: 'white', fontSize: 15, fontWeight: 600, fontFamily: '-apple-system,sans-serif' }}>{timeStr}</span>
-        <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
-          <WifiIcon />
-          <BatteryIcon />
-        </div>
-      </div>
-
       {/* ── Back button (← Lock Screen) ── */}
-      <div style={{ position: 'absolute', top: 62, left: 0, zIndex: 30 }}>
+      <div style={{ position: 'absolute', top: 'calc(env(safe-area-inset-top, 12px) + 8px)', left: 0, zIndex: 30 }}>
         <motion.button
           onClick={onBack}
           initial={{ opacity: 0, x: -10 }}

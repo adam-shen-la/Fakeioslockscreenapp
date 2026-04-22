@@ -2,6 +2,7 @@ import { useState, useEffect, useRef, useCallback } from 'react';
 import { motion, useMotionValue, animate, AnimatePresence } from 'motion/react';
 import {
   MessageSquare, Hash, Phone, Flame, MapPin, Map, Music,
+  Camera, Mail, CalendarDays, Zap, Play, Car, Briefcase, DollarSign, Star, MessageCircle,
 } from 'lucide-react';
 
 const WALLPAPER =
@@ -11,26 +12,46 @@ const WALLPAPER =
 // App icon colours & shapes
 // ─────────────────────────────────────────────
 const APP_META: Record<string, { bg: string; gradient?: string }> = {
-  messages: { gradient: 'linear-gradient(145deg,#58f552,#00b931)' },
-  slack:    { gradient: 'linear-gradient(145deg,#56117f,#3d0c6b)' },
-  phone:    { gradient: 'linear-gradient(145deg,#58f552,#00b931)' },
-  tinder:   { gradient: 'linear-gradient(145deg,#ff5a5a,#ff2d55)' },
-  findmy:   { gradient: 'linear-gradient(145deg,#58f552,#00b931)' },
-  maps:     { gradient: 'linear-gradient(145deg,#ffffff,#e8f0ff)' },
-  music:    { gradient: 'linear-gradient(145deg,#ff6b6b,#fc3c44)' },
+  messages:  { gradient: 'linear-gradient(145deg,#58f552,#00b931)' },
+  slack:     { gradient: 'linear-gradient(145deg,#56117f,#3d0c6b)' },
+  phone:     { gradient: 'linear-gradient(145deg,#58f552,#00b931)' },
+  tinder:    { gradient: 'linear-gradient(145deg,#ff5a5a,#ff2d55)' },
+  findmy:    { gradient: 'linear-gradient(145deg,#58f552,#00b931)' },
+  maps:      { gradient: 'linear-gradient(145deg,#ffffff,#e8f0ff)' },
+  music:     { gradient: 'linear-gradient(145deg,#ff6b6b,#fc3c44)' },
+  instagram: { gradient: 'linear-gradient(145deg,#f9a248,#e1306c,#833ab4)' },
+  gmail:     { gradient: 'linear-gradient(145deg,#ea4335,#c5221f)' },
+  calendar:  { gradient: 'linear-gradient(145deg,#ffffff,#f2f2f7)' },
+  x:         { gradient: 'linear-gradient(145deg,#1a1a1a,#000000)' },
+  netflix:   { gradient: 'linear-gradient(145deg,#e50914,#b20710)' },
+  uber:      { gradient: 'linear-gradient(145deg,#000000,#1a1a1a)' },
+  linkedin:  { gradient: 'linear-gradient(145deg,#0a66c2,#004182)' },
+  cashapp:   { gradient: 'linear-gradient(145deg,#00d64f,#00a63e)' },
+  duolingo:  { gradient: 'linear-gradient(145deg,#58cc02,#3e9600)' },
+  reddit:    { gradient: 'linear-gradient(145deg,#ff4500,#cc3700)' },
 };
 
 function AppIcon({ id, size = 40 }: { id: string; size?: number }) {
   const meta = APP_META[id] ?? { bg: '#555' };
   const iconProps = { size: size * 0.55, strokeWidth: 2 };
   const iconMap: Record<string, React.ReactNode> = {
-    messages: <MessageSquare {...iconProps} color="white" />,
-    slack:    <Hash {...iconProps} color="white" />,
-    phone:    <Phone {...iconProps} color="white" fill="white" />,
-    tinder:   <Flame {...iconProps} color="white" fill="white" />,
-    findmy:   <MapPin {...iconProps} color="white" fill="white" />,
-    maps:     <Map {...iconProps} color="#3478f6" />,
-    music:    <Music {...iconProps} color="white" />,
+    messages:  <MessageSquare {...iconProps} color="white" />,
+    slack:     <Hash {...iconProps} color="white" />,
+    phone:     <Phone {...iconProps} color="white" fill="white" />,
+    tinder:    <Flame {...iconProps} color="white" fill="white" />,
+    findmy:    <MapPin {...iconProps} color="white" fill="white" />,
+    maps:      <Map {...iconProps} color="#3478f6" />,
+    music:     <Music {...iconProps} color="white" />,
+    instagram: <Camera {...iconProps} color="white" />,
+    gmail:     <Mail {...iconProps} color="white" />,
+    calendar:  <CalendarDays {...iconProps} color="#e8290b" />,
+    x:         <Zap {...iconProps} color="white" fill="white" />,
+    netflix:   <Play {...iconProps} color="white" fill="white" />,
+    uber:      <Car {...iconProps} color="white" />,
+    linkedin:  <Briefcase {...iconProps} color="white" />,
+    cashapp:   <DollarSign {...iconProps} color="white" />,
+    duolingo:  <Star {...iconProps} color="white" fill="white" />,
+    reddit:    <MessageCircle {...iconProps} color="white" fill="white" />,
   };
   return (
     <div
@@ -125,6 +146,85 @@ const INITIAL_GROUPS: NGroup[] = [
     dismissed: false, expanded: false,
     items: [
       { id: 'mu1', sender: 'Apple Music', body: 'Jolene — Dolly Parton · Now Playing', time: '9m ago' },
+    ],
+  },
+  {
+    id: 'instagram', appId: 'instagram', appName: 'Instagram', canOpen: false,
+    dismissed: false, expanded: false,
+    items: [
+      { id: 'ig1', sender: 'Instagram', body: 'sofia_v and 47 others liked your photo', time: '4m ago' },
+      { id: 'ig2', sender: 'Instagram', body: 'jake.m commented: "this is everything 🔥"', time: '11m ago' },
+      { id: 'ig3', sender: 'Instagram', body: 'You have a new follower: marcus_shoots', time: '28m ago' },
+    ],
+  },
+  {
+    id: 'gmail', appId: 'gmail', appName: 'Gmail', canOpen: false,
+    dismissed: false, expanded: false,
+    items: [
+      { id: 'gm1', sender: 'HR Team', body: 'Your Q3 performance review is scheduled for Friday at 2pm', time: '6m ago' },
+      { id: 'gm2', sender: 'IT Security', body: 'Action required: Update your password before midnight tonight', time: '19m ago' },
+      { id: 'gm3', sender: 'noreply@delta.com', body: 'Flight DL 2847 to JFK departs in 3 hours — check in now', time: '44m ago' },
+    ],
+  },
+  {
+    id: 'calendar', appId: 'calendar', appName: 'Calendar', canOpen: false,
+    dismissed: false, expanded: false,
+    items: [
+      { id: 'cal1', sender: 'In 15 minutes', body: 'Dinner reservation · The Inn at Little Washington', time: '1m ago' },
+      { id: 'cal2', sender: 'Tomorrow 9:00 AM', body: 'Daniels v. Xu — Pre-trial hearing · Courtroom B', time: '3m ago' },
+    ],
+  },
+  {
+    id: 'x', appId: 'x', appName: 'X', canOpen: false,
+    dismissed: false, expanded: false,
+    items: [
+      { id: 'x1', sender: 'X', body: '@danielscase retweeted your post — 214 new impressions', time: '17m ago' },
+      { id: 'x2', sender: 'X', body: 'You were mentioned in a post by @legalinsider', time: '52m ago' },
+    ],
+  },
+  {
+    id: 'netflix', appId: 'netflix', appName: 'Netflix', canOpen: false,
+    dismissed: false, expanded: false,
+    items: [
+      { id: 'nf1', sender: 'Netflix', body: 'New episode available: "The Diplomat" S2 E4 — Watch now', time: '1h ago' },
+    ],
+  },
+  {
+    id: 'uber', appId: 'uber', appName: 'Uber', canOpen: false,
+    dismissed: false, expanded: false,
+    items: [
+      { id: 'ub1', sender: 'Uber', body: 'Your driver Kofi is 3 minutes away · Toyota Camry · KZM 4829', time: '2m ago' },
+      { id: 'ub2', sender: 'Uber Eats', body: 'Your order from Shake Shack is out for delivery', time: '33m ago' },
+    ],
+  },
+  {
+    id: 'linkedin', appId: 'linkedin', appName: 'LinkedIn', canOpen: false,
+    dismissed: false, expanded: false,
+    items: [
+      { id: 'li1', sender: 'LinkedIn', body: 'Sarah Kim viewed your profile — she\'s a Senior Partner at Kirkland & Ellis', time: '20m ago' },
+      { id: 'li2', sender: 'LinkedIn', body: 'You have 3 new connection requests', time: '1h ago' },
+    ],
+  },
+  {
+    id: 'cashapp', appId: 'cashapp', appName: 'Cash App', canOpen: false,
+    dismissed: false, expanded: false,
+    items: [
+      { id: 'ca1', sender: 'Cash App', body: 'Arjun sent you $120.00 — "dinner last night 🍷"', time: '25m ago' },
+    ],
+  },
+  {
+    id: 'duolingo', appId: 'duolingo', appName: 'Duolingo', canOpen: false,
+    dismissed: false, expanded: false,
+    items: [
+      { id: 'dl1', sender: 'Duolingo', body: "You're on a 14-day streak! Don't break it now 🦉", time: '2h ago' },
+    ],
+  },
+  {
+    id: 'reddit', appId: 'reddit', appName: 'Reddit', canOpen: false,
+    dismissed: false, expanded: false,
+    items: [
+      { id: 'rd1', sender: 'r/legaladvice', body: 'Your post "Daniels v. Xu update" has 847 upvotes and 203 comments', time: '1h ago' },
+      { id: 'rd2', sender: 'r/Charlottesville', body: 'New reply to your comment in "Best spots downtown"', time: '3h ago' },
     ],
   },
 ];
@@ -436,45 +536,6 @@ export function LockScreen({ onOpenFindMy, onReset }: LockScreenProps) {
       {/* Dim overlay for text legibility */}
       <div style={{ position: 'absolute', inset: 0, background: 'rgba(0,0,0,0.28)' }} />
 
-      {/* ── Dynamic Island ── */}
-      <div style={{
-        position: 'absolute',
-        top: 'max(12px, env(safe-area-inset-top, 12px))',
-        left: '50%',
-        transform: 'translateX(-50%)',
-        width: 120,
-        height: 34,
-        background: '#000',
-        borderRadius: 20,
-        zIndex: 50,
-      }} />
-
-      {/* ── Status bar ── */}
-      <div style={{
-        position: 'absolute',
-        top: 0,
-        left: 0, right: 0,
-        paddingTop: 'max(16px, env(safe-area-inset-top, 16px))',
-        paddingLeft: 20,
-        paddingRight: 16,
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'space-between',
-        zIndex: 40,
-        height: 60,
-      }}>
-        {/* Carrier — left of Dynamic Island */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
-          <SignalBars bars={3} />
-          <span style={{ color: 'white', fontSize: 14, fontWeight: 600, letterSpacing: -0.3 }}>T-Mobile</span>
-        </div>
-        {/* Status icons — right of Dynamic Island */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
-          <WifiIcon />
-          <BatteryIcon percent={85} />
-        </div>
-      </div>
-
       {/* ── Scrollable content ── */}
       <div style={{
         position: 'absolute', inset: 0,
@@ -513,9 +574,6 @@ export function LockScreen({ onOpenFindMy, onReset }: LockScreenProps) {
             textShadow: '0 2px 20px rgba(0,0,0,0.5)',
           }}>
             {formatHour(time)}:{formatMin(time)}
-          </div>
-          <div style={{ marginTop: 6, color: 'rgba(255,255,255,0.5)', fontSize: 12 }}>
-            Triple-tap to reset
           </div>
         </div>
 

@@ -128,20 +128,6 @@ const INITIAL_GROUPS: NGroup[] = [
     ],
   },
   {
-    id: 'findmy', appId: 'findmy', appName: 'Find My', canOpen: true,
-    dismissed: false, expanded: false,
-    items: [
-      { id: 'fm1', sender: "Nic's iPhone", body: "Nic's iPhone is nearby — tap to view location", time: '3m ago' },
-    ],
-  },
-  {
-    id: 'maps', appId: 'maps', appName: 'Maps', canOpen: false,
-    dismissed: false, expanded: false,
-    items: [
-      { id: 'mp1', sender: 'Maps', body: 'Route updated · ETA 12 min to destination', time: '7m ago' },
-    ],
-  },
-  {
     id: 'music', appId: 'music', appName: 'Music', canOpen: false,
     dismissed: false, expanded: false,
     items: [
@@ -225,6 +211,13 @@ const INITIAL_GROUPS: NGroup[] = [
     items: [
       { id: 'rd1', sender: 'r/legaladvice', body: 'Your post "Daniels v. Xu update" has 847 upvotes and 203 comments', time: '1h ago' },
       { id: 'rd2', sender: 'r/Charlottesville', body: 'New reply to your comment in "Best spots downtown"', time: '3h ago' },
+    ],
+  },
+  {
+    id: 'findmy', appId: 'findmy', appName: 'Find My', canOpen: true,
+    dismissed: false, expanded: false,
+    items: [
+      { id: 'fm1', sender: "Nic's iPhone", body: "Nic's iPhone is nearby — tap to view location", time: '3m ago' },
     ],
   },
 ];

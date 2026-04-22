@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { motion } from 'motion/react';
 import { ChevronLeft, Plus, Navigation } from 'lucide-react';
 
@@ -6,7 +6,6 @@ import { ChevronLeft, Plus, Navigation } from 'lucide-react';
 function BlueDot() {
   return (
     <div style={{ position: 'relative', width: 28, height: 28 }}>
-      {/* Outer pulse ring 1 */}
       <div style={{
         position: 'absolute',
         inset: -14,
@@ -14,7 +13,6 @@ function BlueDot() {
         background: 'rgba(0, 122, 255, 0.12)',
         animation: 'bluePulse1 2.4s ease-out infinite',
       }} />
-      {/* Outer pulse ring 2 */}
       <div style={{
         position: 'absolute',
         inset: -7,
@@ -22,7 +20,6 @@ function BlueDot() {
         background: 'rgba(0, 122, 255, 0.22)',
         animation: 'bluePulse2 2.4s ease-out infinite',
       }} />
-      {/* Accuracy ring */}
       <div style={{
         position: 'absolute',
         inset: -3,
@@ -30,7 +27,6 @@ function BlueDot() {
         background: 'rgba(0, 122, 255, 0.18)',
         border: '1.5px solid rgba(0, 122, 255, 0.35)',
       }} />
-      {/* Core dot */}
       <div style={{
         width: 28, height: 28,
         borderRadius: '50%',
@@ -38,12 +34,274 @@ function BlueDot() {
         border: '3px solid white',
         boxShadow: '0 2px 8px rgba(0,122,255,0.6), 0 1px 3px rgba(0,0,0,0.4)',
         position: 'relative', zIndex: 2,
+        animation: 'dotBreathe 2.4s ease-in-out infinite',
       }} />
     </div>
   );
 }
 
-// ── Signal bars (same style as lock screen) ──────────────────
+// ── Virginia (Charlottesville) dark-mode SVG map ──────────────
+function VirginiaMap() {
+  const bgColor = '#1b1f2e';
+  const streetMinor = '#272d40';
+  const streetMajor = '#313750';
+  const streetHighway = '#3a3520';
+  const parkColor = '#1b2820';
+  const waterColor = '#1a2535';
+  const labelColor = 'rgba(255,255,255,0.45)';
+  const labelColorBold = 'rgba(255,255,255,0.65)';
+
+  return (
+    <svg
+      viewBox="0 0 390 750"
+      style={{ position: 'absolute', inset: 0, width: '100%', height: '100%' }}
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <rect width="390" height="750" fill={bgColor} />
+
+      {/* ── Parks ── */}
+      <rect x="110" y="165" width="72" height="55" rx="4" fill={parkColor} />
+      <rect x="125" y="310" width="48" height="55" rx="4" fill={parkColor} />
+      <rect x="310" y="220" width="55" height="40" rx="4" fill={parkColor} />
+      {/* Rivanna River */}
+      <path d="M -20 650 Q 60 635 130 645 Q 200 655 280 638 Q 340 625 410 640"
+        stroke={waterColor} strokeWidth="28" fill="none" />
+
+      {/* ── Vertical streets (N-S) ── */}
+      <line x1="52"  y1="0" x2="52"  y2="620" stroke={streetMinor}   strokeWidth="2" />
+      <line x1="90"  y1="0" x2="90"  y2="620" stroke={streetMinor}   strokeWidth="2" />
+      <line x1="128" y1="0" x2="128" y2="620" stroke={streetMinor}   strokeWidth="2.5" />
+      <line x1="162" y1="0" x2="162" y2="620" stroke={streetMinor}   strokeWidth="2" />
+      <line x1="194" y1="0" x2="194" y2="620" stroke={streetMajor}   strokeWidth="3" />
+      <line x1="224" y1="0" x2="224" y2="620" stroke={streetMajor}   strokeWidth="3" />
+      <line x1="258" y1="0" x2="258" y2="620" stroke={streetMinor}   strokeWidth="2.5" />
+      <line x1="294" y1="0" x2="294" y2="620" stroke={streetMinor}   strokeWidth="2" />
+      <line x1="328" y1="0" x2="328" y2="620" stroke={streetMinor}   strokeWidth="2" />
+      <line x1="-10" y1="420" x2="110" y2="140" stroke={streetMinor} strokeWidth="2" />
+      <line x1="340" y1="0"   x2="390" y2="80"  stroke={streetMinor} strokeWidth="1.8" />
+
+      {/* ── Horizontal streets (E-W) ── */}
+      <line x1="0" y1="120" x2="390" y2="115" stroke={streetMinor}   strokeWidth="2" />
+      <line x1="0" y1="175" x2="390" y2="170" stroke={streetMajor}   strokeWidth="3" />
+      <line x1="0" y1="230" x2="390" y2="225" stroke={streetMajor}   strokeWidth="3" />
+      <line x1="0" y1="285" x2="390" y2="280" stroke={streetHighway} strokeWidth="6" />
+      <line x1="0" y1="340" x2="390" y2="335" stroke={streetMajor}   strokeWidth="3" />
+      <line x1="0" y1="395" x2="390" y2="390" stroke={streetMinor}   strokeWidth="2" />
+      <line x1="0" y1="450" x2="390" y2="445" stroke={streetMinor}   strokeWidth="2" />
+      <line x1="0" y1="520" x2="390" y2="515" stroke={streetMinor}   strokeWidth="1.8" />
+
+      {/* ── Route 29 / US-250 ── */}
+      <path d="M 0 550 Q 100 540 195 535 Q 280 530 390 525"
+        stroke={streetHighway} strokeWidth="7" fill="none" />
+      <path d="M 0 550 Q 100 540 195 535 Q 280 530 390 525"
+        stroke="rgba(255,220,60,0.25)" strokeWidth="2" fill="none" strokeDasharray="16,10" />
+
+      {/* ── Street labels ── */}
+      <text x="8"   y="168" fill={labelColor}     fontSize="7.5" fontFamily="-apple-system,sans-serif">W HIGH ST</text>
+      <text x="310" y="168" fill={labelColor}     fontSize="7.5" fontFamily="-apple-system,sans-serif">E HIGH ST</text>
+      <text x="8"   y="222" fill={labelColor}     fontSize="7.5" fontFamily="-apple-system,sans-serif">W MARKET ST</text>
+      <text x="300" y="222" fill={labelColor}     fontSize="7.5" fontFamily="-apple-system,sans-serif">E MARKET ST</text>
+      <text x="8"   y="277" fill={labelColorBold} fontSize="8.5" fontWeight="600" fontFamily="-apple-system,sans-serif">W MAIN ST</text>
+      <text x="310" y="277" fill={labelColorBold} fontSize="8.5" fontWeight="600" fontFamily="-apple-system,sans-serif">E MAIN ST</text>
+      <text x="8"   y="330" fill={labelColor}     fontSize="7.5" fontFamily="-apple-system,sans-serif">WATER ST</text>
+
+      {/* Vertical labels */}
+      <text x="118" y="200" fill={labelColor} fontSize="7" fontFamily="-apple-system,sans-serif" transform="rotate(-90 128 200)">4TH ST NW</text>
+      <text x="182" y="200" fill={labelColor} fontSize="7" fontFamily="-apple-system,sans-serif" transform="rotate(-90 192 200)">2ND ST NW</text>
+      <text x="212" y="200" fill={labelColor} fontSize="7" fontFamily="-apple-system,sans-serif" transform="rotate(-90 222 200)">COMMERCE ST</text>
+      <text x="246" y="200" fill={labelColor} fontSize="7" fontFamily="-apple-system,sans-serif" transform="rotate(-90 256 200)">JEFFERSON ST</text>
+
+      <text x="150" y="545" fill="rgba(255,200,60,0.5)" fontSize="8" fontFamily="-apple-system,sans-serif">US-250 · RICHMOND RD</text>
+      <text x="130" y="197" fill="rgba(100,180,100,0.6)" fontSize="7" fontFamily="-apple-system,sans-serif">LEE PARK</text>
+      <text x="131" y="340" fill="rgba(100,180,100,0.6)" fontSize="7" fontFamily="-apple-system,sans-serif">McGUFFEY</text>
+      <text x="165" y="92"  fill="rgba(255,255,255,0.35)" fontSize="11" fontWeight="500" fontFamily="-apple-system,sans-serif">CHARLOTTESVILLE, VA</text>
+
+      {/* Court Square block */}
+      <rect x="196" y="232" width="26" height="46" rx="3" fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.08)" strokeWidth="1" />
+      <text x="198" y="257" fill="rgba(255,255,255,0.3)" fontSize="5.5" fontFamily="-apple-system,sans-serif">COURT</text>
+      <text x="198" y="265" fill="rgba(255,255,255,0.3)" fontSize="5.5" fontFamily="-apple-system,sans-serif">SQ</text>
+
+      {/* Building blocks */}
+      {[
+        [56,128,30,38],  [96,128,28,38],  [134,128,24,38],
+        [56,182,30,42],  [96,182,28,42],
+        [164,182,26,42], [226,182,28,42],
+        [266,182,26,42], [300,182,24,42], [334,182,22,42],
+        [56,236,30,40],  [96,236,28,40],
+        [164,236,24,40], [226,236,24,40],
+        [266,236,24,40], [300,236,22,40], [334,236,22,40],
+        [56,290,30,42],  [96,290,28,42],
+        [164,290,24,42], [226,290,24,42],
+        [266,290,24,42], [300,290,22,42], [334,290,22,42],
+        [56,345,30,42],  [96,345,28,42],  [130,345,24,42],
+        [164,345,24,42], [226,345,24,42],
+        [266,345,24,42], [300,345,22,42], [334,345,22,42],
+      ].map(([x,y,w,h], i) => (
+        <rect key={i} x={x} y={y} width={w} height={h} rx="2"
+          fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.06)" strokeWidth="0.5"/>
+      ))}
+    </svg>
+  );
+}
+
+// ── Interactive pan + pinch-to-zoom map wrapper ───────────────
+// 10-mile diameter: restricts to downtown Charlottesville only.
+// MIN_SCALE 0.75 shows ~5-mile radius; MAX_SCALE 4 allows street-level zoom.
+const MIN_SCALE = 0.75;
+const MAX_SCALE = 4.0;
+// Max pan offset at scale=1 (≈ 5 miles in each direction)
+const MAX_PAN_BASE = 160;
+
+function clamp(v: number, lo: number, hi: number) {
+  return Math.max(lo, Math.min(hi, v));
+}
+
+function InteractiveMap() {
+  const containerRef = useRef<HTMLDivElement>(null);
+  const [transform, setTransform] = useState({ x: 0, y: 0, scale: 1 });
+
+  // Drag tracking
+  const isDragging = useRef(false);
+  const lastPos = useRef({ x: 0, y: 0 });
+
+  // Pinch tracking
+  const pinchDist = useRef<number | null>(null);
+  const pinchMid  = useRef<{ x: number; y: number } | null>(null);
+
+  // Constrain pan so map never wanders outside the 10-mile window
+  function constrainPan(x: number, y: number, scale: number) {
+    const limit = MAX_PAN_BASE * scale;
+    return { x: clamp(x, -limit, limit), y: clamp(y, -limit, limit) };
+  }
+
+  // Attach non-passive touch listeners so we can preventDefault
+  useEffect(() => {
+    const el = containerRef.current;
+    if (!el) return;
+
+    function onTouchStart(e: TouchEvent) {
+      if (e.touches.length === 1) {
+        isDragging.current = true;
+        lastPos.current = { x: e.touches[0].clientX, y: e.touches[0].clientY };
+      } else if (e.touches.length === 2) {
+        isDragging.current = false;
+        const dx = e.touches[0].clientX - e.touches[1].clientX;
+        const dy = e.touches[0].clientY - e.touches[1].clientY;
+        pinchDist.current = Math.hypot(dx, dy);
+        pinchMid.current = {
+          x: (e.touches[0].clientX + e.touches[1].clientX) / 2,
+          y: (e.touches[0].clientY + e.touches[1].clientY) / 2,
+        };
+      }
+    }
+
+    function onTouchMove(e: TouchEvent) {
+      e.preventDefault();
+      if (e.touches.length === 1 && isDragging.current) {
+        const dx = e.touches[0].clientX - lastPos.current.x;
+        const dy = e.touches[0].clientY - lastPos.current.y;
+        lastPos.current = { x: e.touches[0].clientX, y: e.touches[0].clientY };
+        setTransform(prev => {
+          const { x, y } = constrainPan(prev.x + dx, prev.y + dy, prev.scale);
+          return { ...prev, x, y };
+        });
+      } else if (e.touches.length === 2 && pinchDist.current !== null) {
+        const dx = e.touches[0].clientX - e.touches[1].clientX;
+        const dy = e.touches[0].clientY - e.touches[1].clientY;
+        const dist = Math.hypot(dx, dy);
+        const ratio = dist / pinchDist.current;
+        pinchDist.current = dist;
+        setTransform(prev => {
+          const newScale = clamp(prev.scale * ratio, MIN_SCALE, MAX_SCALE);
+          const { x, y } = constrainPan(prev.x, prev.y, newScale);
+          return { x, y, scale: newScale };
+        });
+      }
+    }
+
+    function onTouchEnd() {
+      isDragging.current = false;
+      pinchDist.current = null;
+      pinchMid.current = null;
+    }
+
+    el.addEventListener('touchstart', onTouchStart, { passive: false });
+    el.addEventListener('touchmove',  onTouchMove,  { passive: false });
+    el.addEventListener('touchend',   onTouchEnd,   { passive: true });
+
+    return () => {
+      el.removeEventListener('touchstart', onTouchStart);
+      el.removeEventListener('touchmove',  onTouchMove);
+      el.removeEventListener('touchend',   onTouchEnd);
+    };
+  }, []);
+
+  // Mouse events for desktop testing
+  function onMouseDown(e: React.MouseEvent) {
+    isDragging.current = true;
+    lastPos.current = { x: e.clientX, y: e.clientY };
+  }
+  function onMouseMove(e: React.MouseEvent) {
+    if (!isDragging.current) return;
+    const dx = e.clientX - lastPos.current.x;
+    const dy = e.clientY - lastPos.current.y;
+    lastPos.current = { x: e.clientX, y: e.clientY };
+    setTransform(prev => {
+      const { x, y } = constrainPan(prev.x + dx, prev.y + dy, prev.scale);
+      return { ...prev, x, y };
+    });
+  }
+  function onMouseUp() { isDragging.current = false; }
+  function onWheel(e: React.WheelEvent) {
+    const ratio = e.deltaY < 0 ? 1.12 : 0.89;
+    setTransform(prev => {
+      const newScale = clamp(prev.scale * ratio, MIN_SCALE, MAX_SCALE);
+      const { x, y } = constrainPan(prev.x, prev.y, newScale);
+      return { x, y, scale: newScale };
+    });
+  }
+
+  return (
+    <div
+      ref={containerRef}
+      style={{
+        position: 'absolute', inset: 0,
+        overflow: 'hidden',
+        cursor: isDragging.current ? 'grabbing' : 'grab',
+        touchAction: 'none',
+        userSelect: 'none',
+      }}
+      onMouseDown={onMouseDown}
+      onMouseMove={onMouseMove}
+      onMouseUp={onMouseUp}
+      onMouseLeave={onMouseUp}
+      onWheel={onWheel}
+    >
+      <div
+        style={{
+          position: 'absolute', inset: 0,
+          transform: `translate(${transform.x}px, ${transform.y}px) scale(${transform.scale})`,
+          transformOrigin: 'center center',
+          willChange: 'transform',
+        }}
+      >
+        <VirginiaMap />
+        {/* Blue dot lives inside the pannable layer */}
+        <div style={{
+          position: 'absolute',
+          left: 'calc(50% - 14px)',
+          top: '36%',
+          zIndex: 10,
+          pointerEvents: 'none',
+        }}>
+          <BlueDot />
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// ── Signal bars ───────────────────────────────────────────────
 function SignalBars() {
   return (
     <svg width="18" height="13" viewBox="0 0 18 13">
@@ -77,146 +335,6 @@ function BatteryIcon() {
   );
 }
 
-// ── Virginia (Charlottesville) dark-mode SVG map ─────────────
-function VirginiaMap() {
-  // Approximate Charlottesville VA downtown layout
-  // Coordinate system: x=0-390 (full phone width), y=0-750
-  const bgColor = '#1b1f2e';
-  const streetMinor = '#272d40';
-  const streetMajor = '#313750';
-  const streetHighway = '#3a3520';
-  const parkColor = '#1b2820';
-  const waterColor = '#1a2535';
-  const labelColor = 'rgba(255,255,255,0.45)';
-  const labelColorBold = 'rgba(255,255,255,0.65)';
-
-  return (
-    <svg
-      viewBox="0 0 390 750"
-      style={{ position: 'absolute', inset: 0, width: '100%', height: '100%' }}
-      xmlns="http://www.w3.org/2000/svg"
-    >
-      {/* Background */}
-      <rect width="390" height="750" fill={bgColor} />
-
-      {/* ── Parks ── */}
-      <rect x="110" y="165" width="72" height="55" rx="4" fill={parkColor} />
-      <rect x="125" y="310" width="48" height="55" rx="4" fill={parkColor} />
-      <rect x="310" y="220" width="55" height="40" rx="4" fill={parkColor} />
-      {/* Rivanna River (bottom) */}
-      <path d="M -20 650 Q 60 635 130 645 Q 200 655 280 638 Q 340 625 410 640"
-        stroke={waterColor} strokeWidth="28" fill="none" />
-
-      {/* ── Vertical streets (N-S) ── */}
-      {/* 6th St SW/NW */}
-      <line x1="52" y1="0" x2="52" y2="620" stroke={streetMinor} strokeWidth="2" />
-      {/* 5th St */}
-      <line x1="90" y1="0" x2="90" y2="620" stroke={streetMinor} strokeWidth="2" />
-      {/* 4th St */}
-      <line x1="128" y1="0" x2="128" y2="620" stroke={streetMinor} strokeWidth="2.5" />
-      {/* 3rd St */}
-      <line x1="162" y1="0" x2="162" y2="620" stroke={streetMinor} strokeWidth="2" />
-      {/* 2nd St SW/NW */}
-      <line x1="194" y1="0" x2="194" y2="620" stroke={streetMajor} strokeWidth="3" />
-      {/* 1st St (Commerce Area) */}
-      <line x1="224" y1="0" x2="224" y2="620" stroke={streetMajor} strokeWidth="3" />
-      {/* Jefferson St */}
-      <line x1="258" y1="0" x2="258" y2="620" stroke={streetMinor} strokeWidth="2.5" />
-      {/* 2nd St NE */}
-      <line x1="294" y1="0" x2="294" y2="620" stroke={streetMinor} strokeWidth="2" />
-      {/* 3rd St NE */}
-      <line x1="328" y1="0" x2="328" y2="620" stroke={streetMinor} strokeWidth="2" />
-      {/* Ridge St (diagonal) */}
-      <line x1="-10" y1="420" x2="110" y2="140" stroke={streetMinor} strokeWidth="2" />
-      {/* Park St (diagonal slight) */}
-      <line x1="340" y1="0" x2="390" y2="80" stroke={streetMinor} strokeWidth="1.8" />
-
-      {/* ── Horizontal streets (E-W) ── */}
-      {/* Barracks Rd / Hydraulic Rd top */}
-      <line x1="0" y1="120" x2="390" y2="115" stroke={streetMinor} strokeWidth="2" />
-      {/* W High St / E High St */}
-      <line x1="0" y1="175" x2="390" y2="170" stroke={streetMajor} strokeWidth="3" />
-      {/* W Market St / E Market St */}
-      <line x1="0" y1="230" x2="390" y2="225" stroke={streetMajor} strokeWidth="3" />
-      {/* *** W Main St / E Main St — major road *** */}
-      <line x1="0" y1="285" x2="390" y2="280" stroke={streetHighway} strokeWidth="6" />
-      {/* Water St */}
-      <line x1="0" y1="340" x2="390" y2="335" stroke={streetMajor} strokeWidth="3" />
-      {/* Garrett St */}
-      <line x1="0" y1="395" x2="390" y2="390" stroke={streetMinor} strokeWidth="2" />
-      {/* Avon St SW extended */}
-      <line x1="0" y1="450" x2="390" y2="445" stroke={streetMinor} strokeWidth="2" />
-      {/* Far south road */}
-      <line x1="0" y1="520" x2="390" y2="515" stroke={streetMinor} strokeWidth="1.8" />
-
-      {/* ── Route 29 / US-250 (highway) — curves through ── */}
-      <path d="M 0 550 Q 100 540 195 535 Q 280 530 390 525"
-        stroke={streetHighway} strokeWidth="7" fill="none" />
-      {/* Highway center line */}
-      <path d="M 0 550 Q 100 540 195 535 Q 280 530 390 525"
-        stroke="rgba(255,220,60,0.25)" strokeWidth="2" fill="none" strokeDasharray="16,10" />
-
-      {/* ── Street labels ── */}
-      <text x="8" y="168" fill={labelColor} fontSize="7.5" fontFamily="-apple-system,sans-serif">W HIGH ST</text>
-      <text x="310" y="168" fill={labelColor} fontSize="7.5" fontFamily="-apple-system,sans-serif">E HIGH ST</text>
-
-      <text x="8" y="222" fill={labelColor} fontSize="7.5" fontFamily="-apple-system,sans-serif">W MARKET ST</text>
-      <text x="300" y="222" fill={labelColor} fontSize="7.5" fontFamily="-apple-system,sans-serif">E MARKET ST</text>
-
-      <text x="8" y="277" fill={labelColorBold} fontSize="8.5" fontWeight="600" fontFamily="-apple-system,sans-serif">W MAIN ST</text>
-      <text x="310" y="277" fill={labelColorBold} fontSize="8.5" fontWeight="600" fontFamily="-apple-system,sans-serif">E MAIN ST</text>
-
-      <text x="8" y="330" fill={labelColor} fontSize="7.5" fontFamily="-apple-system,sans-serif">WATER ST</text>
-
-      {/* Vertical labels */}
-      <text x="118" y="200" fill={labelColor} fontSize="7" fontFamily="-apple-system,sans-serif"
-        transform="rotate(-90 128 200)">4TH ST NW</text>
-      <text x="182" y="200" fill={labelColor} fontSize="7" fontFamily="-apple-system,sans-serif"
-        transform="rotate(-90 192 200)">2ND ST NW</text>
-      <text x="212" y="200" fill={labelColor} fontSize="7" fontFamily="-apple-system,sans-serif"
-        transform="rotate(-90 222 200)">COMMERCE ST</text>
-      <text x="246" y="200" fill={labelColor} fontSize="7" fontFamily="-apple-system,sans-serif"
-        transform="rotate(-90 256 200)">JEFFERSON ST</text>
-
-      {/* Highway label */}
-      <text x="150" y="545" fill="rgba(255,200,60,0.5)" fontSize="8" fontFamily="-apple-system,sans-serif">US-250 · RICHMOND RD</text>
-
-      {/* Park labels */}
-      <text x="130" y="197" fill="rgba(100,180,100,0.6)" fontSize="7" fontFamily="-apple-system,sans-serif">LEE PARK</text>
-      <text x="131" y="340" fill="rgba(100,180,100,0.6)" fontSize="7" fontFamily="-apple-system,sans-serif">McGUFFEY</text>
-
-      {/* City indicator */}
-      <text x="165" y="92" fill="rgba(255,255,255,0.35)" fontSize="11" fontWeight="500"
-        fontFamily="-apple-system,sans-serif">CHARLOTTESVILLE, VA</text>
-
-      {/* Court Square block */}
-      <rect x="196" y="232" width="26" height="46" rx="3" fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.08)" strokeWidth="1" />
-      <text x="198" y="257" fill="rgba(255,255,255,0.3)" fontSize="5.5" fontFamily="-apple-system,sans-serif">COURT</text>
-      <text x="198" y="265" fill="rgba(255,255,255,0.3)" fontSize="5.5" fontFamily="-apple-system,sans-serif">SQ</text>
-
-      {/* Building blocks (grey rectangles) */}
-      {[
-        [56,128,30,38], [96,128,28,38], [134,128,24,38],
-        [56,182,30,42], [96,182,28,42],
-        [164,182,26,42], [226,182,28,42],
-        [266,182,26,42], [300,182,24,42], [334,182,22,42],
-        [56,236,30,40], [96,236,28,40],
-        [164,236,24,40], [226,236,24,40],
-        [266,236,24,40], [300,236,22,40], [334,236,22,40],
-        [56,290,30,42], [96,290,28,42],
-        [164,290,24,42], [226,290,24,42],
-        [266,290,24,42], [300,290,22,42], [334,290,22,42],
-        [56,345,30,42], [96,345,28,42], [130,345,24,42],
-        [164,345,24,42], [226,345,24,42],
-        [266,345,24,42], [300,345,22,42], [334,345,22,42],
-      ].map(([x,y,w,h], i) => (
-        <rect key={i} x={x} y={y} width={w} height={h} rx="2"
-          fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.06)" strokeWidth="0.5"/>
-      ))}
-    </svg>
-  );
-}
-
 // ── Bottom sheet panel ────────────────────────────────────────
 function BottomSheet() {
   const [shareEnabled, setShareEnabled] = useState(true);
@@ -236,12 +354,9 @@ function BottomSheet() {
       borderTopRightRadius: 20,
       overflow: 'hidden',
     }}>
-      {/* Pull handle */}
       <div style={{ display: 'flex', justifyContent: 'center', padding: '10px 0 6px' }}>
         <div style={{ width: 36, height: 4.5, background: 'rgba(255,255,255,0.25)', borderRadius: 3 }} />
       </div>
-
-      {/* Title row */}
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '4px 20px 12px' }}>
         <span style={{ color: 'white', fontSize: 22, fontWeight: 700, fontFamily: '-apple-system,sans-serif' }}>Me</span>
         <button style={{
@@ -253,17 +368,12 @@ function BottomSheet() {
           <Plus size={16} color="white" />
         </button>
       </div>
-
-      {/* Address */}
       <div style={{ padding: '0 20px 14px' }}>
         <span style={{ color: 'rgba(255,255,255,0.6)', fontSize: 14, fontFamily: '-apple-system,sans-serif' }}>
           312 E Main St, Charlottesville VA, United States
         </span>
       </div>
-
       <div style={{ height: 1, background: 'rgba(255,255,255,0.08)', margin: '0 20px' }} />
-
-      {/* My Location row */}
       <div style={rowStyle}>
         <div style={{ display: 'flex', alignItems: 'center', gap: 14 }}>
           <div style={{
@@ -278,8 +388,6 @@ function BottomSheet() {
           </div>
         </div>
       </div>
-
-      {/* Share My Location */}
       <div style={rowStyle}>
         <span style={{ color: 'white', fontSize: 15, fontFamily: '-apple-system,sans-serif' }}>Share My Location</span>
         <div
@@ -304,8 +412,6 @@ function BottomSheet() {
           }} />
         </div>
       </div>
-
-      {/* Sharing From */}
       <div style={{ ...rowStyle, borderBottom: 'none' }}>
         <span style={{ color: 'white', fontSize: 15, fontFamily: '-apple-system,sans-serif' }}>Sharing From</span>
         <span style={{ color: 'rgba(255,255,255,0.45)', fontSize: 14, fontFamily: '-apple-system,sans-serif' }}>This iPhone and cellular</span>
@@ -390,10 +496,6 @@ export function FindMyApp({ onBack }: FindMyAppProps) {
     return () => clearInterval(t);
   }, []);
 
-  const h = time.getHours() % 12 || 12;
-  const m = time.getMinutes().toString().padStart(2, '0');
-  const timeStr = `${h}:${m}`;
-
   return (
     <div style={{
       position: 'relative', width: '100%', height: '100%',
@@ -415,16 +517,14 @@ export function FindMyApp({ onBack }: FindMyAppProps) {
         }
         @keyframes dotBreathe {
           0%, 100% { box-shadow: 0 2px 8px rgba(0,122,255,0.6), 0 1px 3px rgba(0,0,0,0.4); }
-          50% { box-shadow: 0 2px 16px rgba(0,122,255,0.9), 0 1px 6px rgba(0,0,0,0.4); }
+          50%       { box-shadow: 0 2px 16px rgba(0,122,255,0.9), 0 1px 6px rgba(0,0,0,0.4); }
         }
       `}</style>
 
-      {/* Map fills screen */}
-      <div style={{ position: 'absolute', inset: 0 }}>
-        <VirginiaMap />
-      </div>
+      {/* Interactive map fills screen */}
+      <InteractiveMap />
 
-      {/* ── Back button (← Lock Screen) ── */}
+      {/* ── Back button ── */}
       <div style={{ position: 'absolute', top: 'calc(env(safe-area-inset-top, 12px) + 8px)', left: 0, zIndex: 30 }}>
         <motion.button
           onClick={onBack}
@@ -457,7 +557,6 @@ export function FindMyApp({ onBack }: FindMyAppProps) {
         position: 'absolute', top: 62, right: 16, zIndex: 30,
         display: 'flex', flexDirection: 'column', gap: 10,
       }}>
-        {/* Map type */}
         <motion.button
           initial={{ opacity: 0, scale: 0.8 }}
           animate={{ opacity: 1, scale: 1 }}
@@ -478,8 +577,6 @@ export function FindMyApp({ onBack }: FindMyAppProps) {
             <path d="M15 15l6 3V6l-6-3" stroke="white" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/>
           </svg>
         </motion.button>
-
-        {/* Navigation / re-center */}
         <motion.button
           initial={{ opacity: 0, scale: 0.8 }}
           animate={{ opacity: 1, scale: 1 }}
@@ -498,25 +595,7 @@ export function FindMyApp({ onBack }: FindMyAppProps) {
         </motion.button>
       </div>
 
-      {/* ── Blue dot (Nic's location) ── */}
-      {/* Slightly off-center to look like someone nearby */}
-      <motion.div
-        initial={{ opacity: 0, scale: 0 }}
-        animate={{ opacity: 1, scale: 1 }}
-        transition={{ delay: 0.5, type: 'spring', stiffness: 200, damping: 15 }}
-        style={{
-          position: 'absolute',
-          // Center-ish, slightly left of Commerce St, on Main St
-          left: 'calc(50% - 14px)',
-          top: '36%',
-          zIndex: 25,
-          pointerEvents: 'none',
-        }}
-      >
-        <BlueDot />
-      </motion.div>
-
-      {/* Spacer to push bottom sheet down */}
+      {/* Spacer */}
       <div style={{ flex: 1 }} />
 
       {/* ── Bottom sheet + tabs ── */}
